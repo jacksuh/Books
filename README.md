@@ -6,7 +6,7 @@ Api Books Armazenamento de cadastro de livro como lista e por genero.
 - [x] Criação das classes
 - [x] Relacionamento ManyToMany
 - [x] Organização do código/Classes
-- [x] Classe Dto e Controller / salvar em forma de Lista
+- [x] Classe Dto e Controller/salvar em forma de Lista
 - [x] Teste via Postman/Insomnia
 - [x] Filtrar por autor/livro/genero
 - []  Regra de negocio.
