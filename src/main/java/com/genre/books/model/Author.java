@@ -1,12 +1,18 @@
 package com.genre.books.model;
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
-
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
-
 @Entity
-
+@Getter
+@Setter
+@NoArgsConstructor
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Author {
 
     @Id
@@ -16,32 +22,7 @@ public class Author {
 
     private String name;
 
-    @JsonBackReference
-
-    @OneToMany(mappedBy = "author")
+    @ManyToMany(mappedBy = "author")
     private List<Book> books;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<Book> getBooks() {
-        return books;
-    }
-
-    public void setBooks(List<Book> books) {
-        this.books = books;
-    }
 }
