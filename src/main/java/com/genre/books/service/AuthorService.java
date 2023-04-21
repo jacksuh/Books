@@ -13,4 +13,8 @@ public class AuthorService {
     public Page<Author> getAuthor(String author, Pageable page) {
         return repository.findByName(author, page);
     }
+
+    public Page<Author> getAuthorName(String name, Pageable page) {
+        return repository.findByNameStartingWith(name, page);
+    }
 }

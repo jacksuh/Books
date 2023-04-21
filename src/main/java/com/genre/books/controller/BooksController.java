@@ -3,7 +3,6 @@ import com.genre.books.dto.BookDetailingDto;
 import com.genre.books.dto.BookDto;
 import com.genre.books.model.Author;
 import com.genre.books.model.Book;
-import com.genre.books.repository.BooksRepository;
 import com.genre.books.service.AuthorService;
 import com.genre.books.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +53,12 @@ public class BooksController {
         return ResponseEntity.ok(list);
     }
 
+
+    @GetMapping(value = "name")
+    public ResponseEntity <Page<Author>> getAuthorName(@RequestParam(name = "name") String name, Pageable page){
+        Page<Author> list = authorService.getAuthorName(name, page);
+        return ResponseEntity.ok(list);
+    }
 
 
 }

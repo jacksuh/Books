@@ -6,4 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface AuthorRepository extends JpaRepository<Author, Long> {
 
     Page<Author> findByName(String name, Pageable page);
+
+    Page<Author> findByNameStartingWith(String name, Pageable page);
 }
