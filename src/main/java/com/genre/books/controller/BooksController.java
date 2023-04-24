@@ -5,6 +5,7 @@ import com.genre.books.model.Author;
 import com.genre.books.model.Book;
 import com.genre.books.service.AuthorService;
 import com.genre.books.service.BookService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,7 +24,7 @@ public class BooksController {
     private AuthorService authorService;
 
     @PostMapping
-    public ResponseEntity livros(@RequestBody BookDto dto, UriComponentsBuilder uriBuilder){
+    public ResponseEntity livros(@RequestBody @Valid BookDto dto, UriComponentsBuilder uriBuilder){
         Book b = service.saveBook(dto);
         var uri = uriBuilder.path("/book/{id}").buildAndExpand(b.getAuthor()).toUri();
         return ResponseEntity.created(uri).body(new BookDetailingDto((Book) b));

@@ -10,7 +10,8 @@ Api Books Armazenamento de cadastro de livro como lista e por genero.
 - [x] Teste via Postman/Insomnia
 - [x] Filtrar por autor/livro/genero
 - [x] DOC da api
-- []  Tratamento de erro.
+- [x] Tratamento de erro.
+- [x] Validação de campos.
 
 
 ## Usuario:
