@@ -8,6 +8,7 @@ import com.genre.books.service.BookService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -25,31 +26,36 @@ public class BooksController {
     private AuthorService authorService;
 
     @PostMapping
-    public ResponseEntity livros(@RequestBody @Valid BookDto dto, UriComponentsBuilder uriBuilder){
+    @CacheEvict(value = "book", allEntries = true)
+    public ResponseEntity books(@RequestBody @Valid BookDto dto, UriComponentsBuilder uriBuilder){
         Book b = service.saveBook(dto);
         var uri = uriBuilder.path("/book/{id}").buildAndExpand(b.getAuthor()).toUri();
         return ResponseEntity.created(uri).body(new BookDetailingDto((Book) b));
     }
 
     @GetMapping
-    public ResponseEntity <Page<Book>> getLivros(Pageable page){
+    @Cacheable(value = "book")
+    public ResponseEntity <Page<Book>> getBooks(Pageable page){
         Page<Book> list = service.getAll(page);
         return ResponseEntity.ok(list);
     }
 
     @GetMapping(value = "titulo")
+    @CacheEvict(value = "book", allEntries = true)
     public ResponseEntity <Page<Book>> getBooksTitle(@RequestParam(name = "titulo") String titulo, Pageable page){
         Page<Book> list = service.getTitle(titulo, page);
         return ResponseEntity.ok(list);
     }
 
     @GetMapping(value = "genero")
+    @CacheEvict(value = "book", allEntries = true)
     public ResponseEntity <Page<Book>> getGenre(@RequestParam(name = "genero") String genero, Pageable page){
         Page<Book> list = service.getGenero(genero, page);
         return ResponseEntity.ok(list);
     }
 
     @GetMapping(value = "author")
+    @CacheEvict(value = "book", allEntries = true)
     public ResponseEntity <Page<Author>> getAuthor(@RequestParam(name = "author") String author, Pageable page){
         Page<Author> list = authorService.getAuthor(author, page);
         return ResponseEntity.ok(list);
@@ -57,13 +63,14 @@ public class BooksController {
 
 
     @GetMapping(value = "name")
+    @CacheEvict(value = "book", allEntries = true)
     public ResponseEntity <Page<Author>> getAuthorName(@RequestParam(name = "name") String name, Pageable page){
         Page<Author> list = authorService.getAuthorName(name, page);
         return ResponseEntity.ok(list);
     }
 
     @DeleteMapping("/{id}")
-    @CacheEvict(value = "ticket", allEntries = true)
+    @CacheEvict(value = "book", allEntries = true)
     public ResponseEntity deleteBook(@PathVariable Long id){
         service.deleteBook(id);
         return ResponseEntity.ok().build();

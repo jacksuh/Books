@@ -31,7 +31,11 @@ public class SecurityConfigurations {
                 .requestMatchers(HttpMethod.PUT, "/login").permitAll()
                 .requestMatchers(HttpMethod.DELETE, "/book/{}").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.POST, "/book").permitAll()
-                .requestMatchers(HttpMethod.GET, "/book").permitAll()
+                .requestMatchers(HttpMethod.GET, "/book").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.GET, "/book/titulo").permitAll()
+                .requestMatchers(HttpMethod.GET, "/book/genero").permitAll()
+                .requestMatchers(HttpMethod.GET, "book/author").permitAll()
+                .requestMatchers(HttpMethod.GET, "/book/name").permitAll()
                 .requestMatchers(HttpMethod.PUT, "/book/{}").hasRole("ADMIN")
                 .requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
 

@@ -14,11 +14,23 @@ Api Books Armazenamento de cadastro de livro como lista e por genero.
 - [x] Validação de campos.
 - [x] SpringSecurity validação de campo.
 - [x] Auth0/Token JWT
+- [x] Testes automatizados com Mock.
+- [x] Adicionar cache, cors. 
 
 ## Usuario:
+Cadastro de usuario<br>
+Listar usuarios somente para usuario com permissão ADMIN.<br>
+Atualizar usuario.<br>
+Excluir Usuario somente para usuario com permissão ADMIN.
 
 ## Books:
-
+Cadastrar Livros.<br>
+Listar todos os livros com permissão ADMIN.<br>
+Listar por autor.<br>
+Listar por Genero.<br>
+Listar por titulo.<br>
+Listar por iniciais ou primeiro nome.<br>
+Deletar somenete user ADMIN.
 
 ## Executar o projeto
 Dentro do diretorio utilizando o terminal digite:
