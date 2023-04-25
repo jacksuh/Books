@@ -7,6 +7,7 @@ import com.genre.books.service.AuthorService;
 import com.genre.books.service.BookService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -61,5 +62,11 @@ public class BooksController {
         return ResponseEntity.ok(list);
     }
 
+    @DeleteMapping("/{id}")
+    @CacheEvict(value = "ticket", allEntries = true)
+    public ResponseEntity deleteBook(@PathVariable Long id){
+        service.deleteBook(id);
+        return ResponseEntity.ok().build();
+    }
 
 }

@@ -10,6 +10,5 @@ public record BookDto(
         @NotBlank
         String genre,
 
-        @NotBlank
         List<Author> author) {
 }
