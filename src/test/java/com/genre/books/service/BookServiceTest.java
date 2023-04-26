@@ -1,0 +1,57 @@
+package com.genre.books.service;
+
+
+import com.genre.books.dto.BookDto;
+import com.genre.books.model.Author;
+import com.genre.books.model.Book;
+import com.genre.books.repository.BooksRepository;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
+
+import java.util.*;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
+
+@SpringBootTest
+@WithMockUser
+@AutoConfigureMockMvc
+class BookServiceTest {
+
+    @Autowired
+    private BookService bookService;
+
+    @MockBean
+    private BooksRepository repository;
+
+    @Test
+    public void createBook(){
+
+
+        Author a  = new Author();
+        a.setName("Jackson");
+
+        List<Author> author1 = new ArrayList<Author>();
+        author1.add(a);
+
+        BookDto l = new BookDto("Jackson", "j", author1);
+
+        Book bo = bookService.saveBook(l);
+
+        List<Book> books1 = new ArrayList<Book>();
+        Book b = new Book();
+        b.setAuthor(l.author());
+        b.setGenre(l.genre());
+        b.setTitle(l.title());
+
+        books1.add(b);
+
+        when(repository.saveAll(books1)).thenReturn(books1);
+
+        assertThat(bo.getTitle()).isEqualTo(l.title());
+    }
+}
