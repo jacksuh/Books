@@ -3,25 +3,18 @@ import com.genre.books.dto.BookDto;
 import com.genre.books.model.Author;
 import com.genre.books.model.Book;
 import com.genre.books.repository.BooksRepository;
-import org.apache.tomcat.util.buf.StringUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.test.context.support.WithMockUser;
-
 import java.util.*;
-import java.util.stream.Collectors;
-
 import static org.assertj.core.api.Assertions.assertThat;
-
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -82,7 +75,6 @@ class BookServiceTest {
         assertThat(book).isNotEmpty();
         assertThat(books2.getTitle()).isEqualTo(books3.getTitle());
 
-
     }
 
     @Test
@@ -90,9 +82,27 @@ class BookServiceTest {
 
         Pageable page = PageRequest.of(0, 10);
 
-        Page<Book> bd =  bookService.getTitle("book1", page);
+        List<Book> books1 = new ArrayList<Book>();
+        Book b = new Book();
+        b.setGenre("Jackson");
+        b.setTitle("book");
 
-        assertThat(bd).isNotEmpty();
+        books1.add(b);
+
+        Page<Book> pages = new PageImpl<>(books1, page, 0);
+
+        when(repository.findByTitle("book",page)).thenReturn(pages);
+
+        Page<Book> book =  bookService.getTitle("book", page);
+
+        Book books3 = books1.get(0);
+        Book books2 = book.stream().findAny().get();
+
+
+        assertThat(book).isNotEmpty();
+        assertThat(books2.getTitle()).isEqualTo(books3.getTitle());
+        assertThat(books2.getGenre()).isEqualTo("Jackson");
+
 
     }
 
