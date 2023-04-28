@@ -109,12 +109,29 @@ class BookServiceTest {
 
     @Test
     public void getGenero(){
+
         Pageable page = PageRequest.of(0, 10);
 
-        Page<Book> bd =  bookService.getGenero("vixe", page);
+        List<Book> books1 = new ArrayList<Book>();
+        Book b = new Book();
+        b.setGenre("Jackson");
+        b.setTitle("book");
 
-        assertThat(bd).isNotEmpty();
+        books1.add(b);
 
+        Page<Book> pages = new PageImpl<>(books1, page, 0);
+
+        when(repository.findByTitle("book",page)).thenReturn(pages);
+
+        Page<Book> book =  bookService.getTitle("book", page);
+
+        Book books3 = books1.get(0);
+        Book books2 = book.stream().findAny().get();
+
+
+        assertThat(book).isNotEmpty();
+        assertThat(books2.getTitle()).isEqualTo(books3.getTitle());
+        assertThat(books2.getGenre()).isEqualTo("Jackson");
     }
 
 
