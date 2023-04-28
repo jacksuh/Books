@@ -1,5 +1,4 @@
 package com.genre.books.controller;
-
 import com.genre.books.dto.TokenJwtDto;
 import com.genre.books.dto.UserAuthentication;
 import com.genre.books.dto.UserDetalingDto;
@@ -17,7 +16,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
-
 @RestController
 @RequestMapping("login")
 public class AuthenticationController {

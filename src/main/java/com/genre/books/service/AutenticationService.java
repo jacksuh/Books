@@ -1,5 +1,4 @@
 package com.genre.books.service;
-
 import com.genre.books.dto.UserDto;
 import com.genre.books.exception.ValidationException;
 import com.genre.books.model.User;

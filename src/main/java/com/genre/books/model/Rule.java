@@ -1,5 +1,4 @@
 package com.genre.books.model;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
