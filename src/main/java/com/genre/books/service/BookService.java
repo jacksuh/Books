@@ -29,7 +29,7 @@ public class BookService {
 
     public Book saveBook(BookDto dto) {
         Optional<Book> book = Optional.ofNullable(repository.findByTitle(dto.title()));
-        System.out.println(book);
+
         if(book.isPresent()){
             throw new ValidationException("Book already exists!");
         }else {
