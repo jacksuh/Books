@@ -50,7 +50,7 @@ public class BooksController {
     @GetMapping(value = "genero")
     @CacheEvict(value = "book", allEntries = true)
     public ResponseEntity <Page<Book>> getGenre(@RequestParam(name = "genero") String genero, Pageable page){
-        Page<Book> list = service.getGenero(genero, page);
+        Page<Book> list = service.getGenre(genero, page);
         return ResponseEntity.ok(list);
     }
 

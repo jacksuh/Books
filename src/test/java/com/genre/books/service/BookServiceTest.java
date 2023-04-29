@@ -1,55 +1,91 @@
 package com.genre.books.service;
+
 import com.genre.books.dto.BookDto;
+import com.genre.books.exception.ValidationException;
 import com.genre.books.model.Author;
 import com.genre.books.model.Book;
 import com.genre.books.repository.BooksRepository;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.test.context.support.WithMockUser;
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
-@WithMockUser
-@AutoConfigureMockMvc
+@ExtendWith(MockitoExtension.class)
 class BookServiceTest {
-
-    @Autowired
+    @InjectMocks
     private BookService bookService;
-
-    @MockBean
+    @Mock
     private BooksRepository repository;
-
     @Test
-    public void createBook(){
+    @DisplayName("Should save a book")
+    public void shouldCreateANewBook() {
 
-        Author a  = new Author();
+        //given
+        Author a = new Author();
         a.setName("Jackson");
-        List<Author> author1 = new ArrayList<Author>();
+        List<Author> author1 = new ArrayList<>();
         author1.add(a);
-        BookDto l = new BookDto("Jackson", "j", author1);
+        BookDto bookDto = new BookDto("Jackson", "j", author1);
 
-        Book bo = bookService.saveBook(l);
+        Book expectedBook = new Book();
+        expectedBook.setId(1L);
+        expectedBook.setGenre("j");
+        expectedBook.setTitle("Jackson");
+        Author authorExpected = new Author();
+        authorExpected.setName("Jackson");
+        expectedBook.setAuthor(Collections.singletonList(authorExpected));
+        when(repository.save(any(Book.class))).thenReturn(expectedBook);
 
-        List<Book> books1 = new ArrayList<Book>();
-        Book b = new Book();
-        b.setAuthor(l.author());
-        b.setGenre(l.genre());
-        b.setTitle(l.title());
+        //when
+        Book savedBook = bookService.saveBook(bookDto);
 
-        books1.add(b);
+        //then
+        assertThat(savedBook).isEqualTo(expectedBook);
+    }
+    @Test
+    @DisplayName("Should throws an ValidationException")
+    public void shouldThrowsAnException() {
 
-       when(repository.saveAll(books1)).thenReturn(books1);
+        //given
+        Author a = new Author();
+        a.setName("Jackson");
+        List<Author> author1 = new ArrayList<>();
+        author1.add(a);
+        BookDto bookDto = new BookDto("Jackson", "j", author1);
 
-        assertThat(bo.getTitle()).isEqualTo(l.title());
+        Book expectedBook = new Book();
+        expectedBook.setId(1L);
+        expectedBook.setGenre("j");
+        expectedBook.setTitle("Jackson");
+        Author authorExpected = new Author();
+        authorExpected.setName("Jackson");
+        expectedBook.setAuthor(Collections.singletonList(authorExpected));
+        when(repository.findByTitle(anyString())).thenReturn(expectedBook);
+
+        //when
+        ValidationException thrown = Assertions.assertThrows(ValidationException.class, () -> {
+            bookService.saveBook(bookDto);
+        });
+
+        //then
+        assertThat(thrown).isInstanceOf(ValidationException.class);
+        assertThat(thrown.getMessage()).isEqualTo("Book already exists!");
     }
 
     @Test
@@ -78,7 +114,7 @@ class BookServiceTest {
     }
 
     @Test
-    public void getTitle(){
+    public void getTitle() {
 
         Pageable page = PageRequest.of(0, 10);
 
@@ -91,9 +127,9 @@ class BookServiceTest {
 
         Page<Book> pages = new PageImpl<>(books1, page, 0);
 
-        when(repository.findByTitle("book",page)).thenReturn(pages);
+        when(repository.findByTitle("book", page)).thenReturn(pages);
 
-        Page<Book> book =  bookService.getTitle("book", page);
+        Page<Book> book = bookService.getTitle("book", page);
 
         Book books3 = books1.get(0);
         Book books2 = book.stream().findAny().get();
@@ -108,7 +144,7 @@ class BookServiceTest {
 
 
     @Test
-    public void getGenero(){
+    public void getGenero() {
 
         Pageable page = PageRequest.of(0, 10);
 
@@ -121,9 +157,9 @@ class BookServiceTest {
 
         Page<Book> pages = new PageImpl<>(books1, page, 0);
 
-        when(repository.findByTitle("book",page)).thenReturn(pages);
+        when(repository.findByTitle("book", page)).thenReturn(pages);
 
-        Page<Book> book =  bookService.getTitle("book", page);
+        Page<Book> book = bookService.getTitle("book", page);
 
         Book books3 = books1.get(0);
         Book books2 = book.stream().findAny().get();
