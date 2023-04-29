@@ -11,10 +11,10 @@ public class HandleError {
     public ResponseEntity Erro404(){
         return ResponseEntity.notFound().build();
     }
+
     @ExceptionHandler(ValidationException.class)
     public ResponseEntity handleError(ValidationException e) {
         return ResponseEntity.badRequest().body(e.getMessage());
     }
-
 
 }

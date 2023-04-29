@@ -1,5 +1,6 @@
 package com.genre.books.service;
 import com.genre.books.dto.BookDto;
+import com.genre.books.exception.ValidationException;
 import com.genre.books.model.Book;
 import com.genre.books.repository.AuthorRepository;
 import com.genre.books.repository.BooksRepository;
@@ -27,17 +28,23 @@ public class BookService {
 
 
     public Book saveBook(BookDto dto) {
-        List<Book> books1 = new ArrayList<Book>();
-        Book b = new Book();
-        b.setAuthor(dto.author());
-        b.setGenre(dto.genre());
-        b.setTitle(dto.title());
+        Optional<Book> book = Optional.ofNullable(repository.findByTitle(dto.title()));
+        System.out.println(book);
+        if(book.isPresent()){
+            throw new ValidationException("Book already exists!");
+        }else {
+            List<Book> books1 = new ArrayList<Book>();
+            Book b = new Book();
+            b.setAuthor(dto.author());
+            b.setGenre(dto.genre());
+            b.setTitle(dto.title());
 
-        books1.add(b);
+            books1.add(b);
 
-        repository.saveAll(books1);
+            repository.saveAll(books1);
 
-        return b;
+            return b;
+        }
     }
 
 
