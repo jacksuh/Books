@@ -4,6 +4,8 @@ import com.genre.books.exception.ValidationException;
 import com.genre.books.model.Book;
 import com.genre.books.repository.AuthorRepository;
 import com.genre.books.repository.BooksRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +15,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
+@RequiredArgsConstructor
 public class BookService {
 
     @Autowired
@@ -41,7 +45,8 @@ public class BookService {
 
             books1.add(b);
 
-            repository.saveAll(books1);
+            List<Book> savedBook = repository.saveAll(books1);
+            log.info("Book '{}' successfully saved!", savedBook);
 
             return b;
         }
