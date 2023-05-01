@@ -15,6 +15,7 @@ Api Books Armazenamento de cadastro de livro como lista e por genero.
 - [x] SpringSecurity validação de campo.
 - [x] Auth0/Token JWT
 - [x] Testes automatizados com Mock.
+- [x] Teste de unidade Service
 - [x] Adicionar cache, cors. 
 
 ## Usuario:
