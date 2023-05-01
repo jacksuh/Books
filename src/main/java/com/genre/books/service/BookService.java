@@ -20,7 +20,7 @@ import java.util.Optional;
 public class BookService {
 
     @Autowired
-    private BooksRepository repository;
+    private final BooksRepository repository;
 
     @Autowired
     private AuthorRepository authorRepository;
