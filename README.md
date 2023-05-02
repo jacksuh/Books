@@ -12,6 +12,7 @@ Api Books Armazenamento de cadastro de livro como lista e por genero.
 - [x] DOC da api
 - [x] Tratamento de erro.
 - [x] Validação de campos.
+- [x] Validação se o livro já existe cadastrado.
 - [x] SpringSecurity validação de campo.
 - [x] Auth0/Token JWT
 - [x] Testes automatizados com Mock.
